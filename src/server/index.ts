@@ -17,7 +17,7 @@ async function startup() {
       secret:
         process.env['NODE_ENV'] === 'production'
           ? process.env['SESSION_SECRET']!
-          : process.env['SESSION_SECRET_DEV'] || 'urban-secret-dev-key',
+          : process.env['SESSION_SECRET_DEV'] || 'construction-secret-dev-key',
       maxAge: 365 * 24 * 60 * 60 * 1000,
     })
   )
@@ -36,9 +36,9 @@ async function startup() {
     return res.status(200).send('TX')
   })
 
-  let dist = path.resolve('dist/urban/browser')
+  let dist = path.resolve('dist/construction/browser')
   if (!fs.existsSync(dist)) {
-    dist = path.resolve('../urban/browser')
+    dist = path.resolve('../construction/browser')
   }
   app.use(express.static(dist))
   app.use('/*', async (req, res) => {

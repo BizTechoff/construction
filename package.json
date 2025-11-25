@@ -1,5 +1,5 @@
 {
-  "name": "urban",
+  "name": "construction",
   "version": "0.0.0",
   "scripts": {
     "dev-web": "ng serve --proxy-config proxy.conf.json --open",

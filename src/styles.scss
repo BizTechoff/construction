@@ -13,7 +13,7 @@
 @include mat.core();
 
 // Define the theme object with yellow/gold palette
-$urban-theme: mat.define-theme((color: (theme-type: light,
+$construction-theme: mat.define-theme((color: (theme-type: light,
         primary: mat.$yellow-palette,
         tertiary: mat.$orange-palette,
         use-system-variables: true),
@@ -24,18 +24,18 @@ $urban-theme: mat.define-theme((color: (theme-type: light,
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 :root {
-  @include mat.all-component-themes($urban-theme);
-  @include mat.system-level-colors($urban-theme);
-  @include mat.system-level-typography($urban-theme);
-  @include mat.toolbar-color($urban-theme);
+  @include mat.all-component-themes($construction-theme);
+  @include mat.system-level-colors($construction-theme);
+  @include mat.system-level-typography($construction-theme);
+  @include mat.toolbar-color($construction-theme);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
 // For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
-// @include mat.typography-hierarchy($urban-theme);
+// @include mat.typography-hierarchy($construction-theme);
 
 // Comment out the line below if you want to use the deprecated `color` inputs.
-// @include mat.color-variants-backwards-compatibility($urban-theme);
+// @include mat.color-variants-backwards-compatibility($construction-theme);
 /* You can add global styles to this file, and also import other style files */
 
 

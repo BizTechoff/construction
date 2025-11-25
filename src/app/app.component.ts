@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
         if (this.activeRoute.firstChild.routeConfig)
           return this.activeRoute.firstChild.routeConfig.path
       }
-    return 'urban'
+    return 'construction'
   }
   doesNotRequireLogin() {
     return this.activeRoute?.snapshot?.firstChild?.data?.['noLogin']
