@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import sslRedirect from 'heroku-ssl-redirect'
 import path from 'path'
 import { api } from './api'
+import { processIncomingWebhook, sendMessage } from './wapp'
 // import './express-session'
 
 async function startup() {
@@ -26,14 +27,54 @@ async function startup() {
 
   app.use(api)
 
-  app.post('/api/wapp/received', (req, res) => {
+  // WhatsApp webhook endpoint - receives incoming messages from Green API
+  app.post('/api/wapp/received', api.withRemult, express.json(), async (req, res) => {
     const { key } = req.query
-    console.log('webhook-key', key)
-    if (!(key === process.env['SERVER_API_KEY'])) {
-      console.log('Un-Autorized request received.')
+
+    // Validate API key
+    if (key !== process.env['SERVER_API_KEY']) {
+      console.log('[WAPP] Unauthorized webhook request', key, process.env['SERVER_API_KEY'])
+      return res.status(401).send('Unauthorized')
     }
-    console.log('webhook-body', JSON.stringify(req.body))
-    return res.status(200).send('TX')
+
+    console.log('[WAPP] Webhook received:', JSON.stringify(req.body))
+
+    try {
+      await processIncomingWebhook(req.body)
+      return res.status(200).send('OK')
+    } catch (error) {
+      console.error('[WAPP] Webhook error:', error)
+      return res.status(500).send('Error')
+    }
+  })
+
+  // Send WhatsApp message endpoint (for testing/manual sends)
+  app.post('/api/wapp/send', api.withRemult, express.json(), async (req, res) => {
+    const { key } = req.query
+
+    // Validate API key
+    if (key !== process.env['SERVER_API_KEY']) {
+      console.log('[WAPP] Unauthorized send request')
+      return res.status(401).send('Unauthorized')
+    }
+
+    const { phone, message } = req.body
+
+    if (!phone || !message) {
+      return res.status(400).json({ error: 'phone and message are required' })
+    }
+
+    try {
+      const result = await sendMessage(phone, message)
+      if (result) {
+        return res.status(200).json(result)
+      } else {
+        return res.status(500).json({ error: 'Failed to send message' })
+      }
+    } catch (error) {
+      console.error('[WAPP] Send error:', error)
+      return res.status(500).json({ error: 'Send failed' })
+    }
   })
 
   let dist = path.resolve('dist/construction/browser')

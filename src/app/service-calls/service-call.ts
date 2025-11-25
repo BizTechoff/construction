@@ -12,12 +12,9 @@ import { ServiceCallStatus } from './service-call.status'
   defaultOrderBy: { createDate: 'desc' }
 })
 export class ServiceCall extends IdEntity {
-
-  @Fields.integer({
-    allowApiUpdate: false,
-    caption: terms.callNumber
-  })
-  callNumber = 0
+  
+  @Fields.autoIncrement({ caption: 'מס.קריאה', allowApiUpdate: false, dbReadOnly: true })
+  callNumber = 0;
 
   @Fields.string({
     validate: [Validators.required(terms.requiredFiled)],

@@ -21,12 +21,12 @@ export class SilentRedirectComponent implements OnInit {
       }
       else if (this.router.url) {
         // if (this.i18n.currentLanguage === 'he') {
-        //   if (this.router.url.endsWith('Donations%20List')) {
-        //     this.router.navigate([`/${this.router.url.replace('Donations%20List', 'רשימת תרומות')}`]);
+        //   if (this.router.url.endsWith('constructions%20List')) {
+        //     this.router.navigate([`/${this.router.url.replace('constructions%20List', 'רשימת תרומות')}`]);
         //   }
         // }
         // else {
-        //   this.router.navigate([`/${this.i18n.currentTerms.donationsList}`]);
+        //   this.router.navigate([`/${this.i18n.currentTerms.constructionsList}`]);
         // }
       }
     } else {

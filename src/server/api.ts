@@ -31,30 +31,30 @@ export const api = remultExpress({
   entities,
   getUser,
   dataProvider: async () => {
-        const STARTING_DONATION_NUM = 1001;
+        const STARTING_construction_NUM = 1001;
         const provider = await createPostgresConnection({ 
           configuration: "heroku", 
           sslInDev: !(process.env['DEV_MODE'] === 'DEV') })
-
-        /*
+/*
                 let seq = `
-                CREATE SEQUENCE IF NOT EXISTS public.donations_donationnum_seq
+                CREATE SEQUENCE IF NOT EXISTS public.serviceCalls_callNumber_seq
                 INCREMENT 1
                 START 1001
                 MINVALUE 1001
                 MAXVALUE 2147483647
                 CACHE 1
-                OWNED BY donations.donationnum;
+                OWNED BY serviceCalls.callNumber;
             `
         
-                // findorcreate donationNum serial restart at 1001.
-                await provider.execute("alter table donations add column if not exists donationnum serial");
-                let result = await provider.execute("SELECT last_value FROM donations_donationnum_seq");
+                // findorcreate callNumber serial restart at 1001.
+                await provider.execute('alter table "serviceCalls" add column if not exists callNumber serial');
+        
+                let result = await provider.execute('SELECT last_value FROM "serviceCalls_callNumber_seq"');
                 if (result && result.rows && result.rows.length > 0) {
                     let count = parseInt(result.rows[0].last_value);
-                    console.log('donations_donationnum_seq', count)
-                    if (count < STARTING_DONATION_NUM) {
-                        await provider.execute(`SELECT setval('donations_donationnum_seq'::regclass, ${STARTING_DONATION_NUM}, false)`);
+                    console.log('serviceCalls_callNumber_seq', count)
+                    if (count < STARTING_construction_NUM) {
+                        await provider.execute(`SELECT setval('"serviceCalls_callNumber_seq"'::regclass, ${STARTING_construction_NUM}, false)`);
                     }
                 }
         */

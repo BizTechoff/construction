@@ -1,12 +1,11 @@
 import {
   Entity,
   Fields,
-  IdEntity,
-  Validators
+  IdEntity
 } from 'remult'
 import { terms } from '../terms'
-import { WhatsAppMessageType } from './whatsapp-message.type'
 import { WhatsAppMessageStatus } from './whatsapp-message.status'
+import { WhatsAppMessageType } from './whatsapp-message.type'
 
 @Entity<WhatsAppMessage>('whatsappMessages', {
   allowApiCrud: true,
@@ -33,6 +32,11 @@ export class WhatsAppMessage extends IdEntity {
     caption: terms.whatsappMessageText
   })
   messageText = ''
+
+  //  @Field(() => WhatsAppMessage, {
+  //     caption: terms.whatsappMessageType
+  //   })
+  //   messageType = WhatsAppMessageType.incoming
 
   @Fields.object<WhatsAppMessage, WhatsAppMessageType>({
     caption: terms.whatsappMessageType
