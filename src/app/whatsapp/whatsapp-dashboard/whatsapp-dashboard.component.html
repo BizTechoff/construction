@@ -1,0 +1,149 @@
+<div class="page-container">
+  <!-- HEADER (sticky top) -->
+  <div class="page-header">
+    <div class="header-row">
+      <h1>{{ terms.whatsappDashboard }}</h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card pending">
+        <div class="stat-icon">
+          <mat-icon>message</mat-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats.pendingMessages }}</span>
+          <span class="stat-label">{{ terms.whatsappPendingMessages }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card open">
+        <div class="stat-icon">
+          <mat-icon>build</mat-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats.openServiceCalls }}</span>
+          <span class="stat-label">{{ terms.whatsappOpenServiceCalls }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card today">
+        <div class="stat-icon">
+          <mat-icon>today</mat-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats.todayMessages }}</span>
+          <span class="stat-label">{{ terms.whatsappTodayMessages }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card created">
+        <div class="stat-icon">
+          <mat-icon>add_circle</mat-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats.todayServiceCalls }}</span>
+          <span class="stat-label">{{ terms.whatsappTodayServiceCalls }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="page-content">
+    <div class="content-grid">
+      <!-- Pending Messages Panel -->
+      <div class="panel messages-panel">
+        <div class="panel-header">
+          <h2>
+            <mat-icon>chat</mat-icon>
+            {{ terms.whatsappPendingMessages }}
+          </h2>
+          <span class="badge" *ngIf="messages.length">{{ messages.length }}</span>
+        </div>
+        <div class="panel-content">
+          <div class="message-item" *ngFor="let message of messages">
+            <div class="message-header">
+              <span class="phone">{{ message.phone }}</span>
+              <span class="time">{{ formatTime(message.createDate) }}</span>
+            </div>
+            <div class="customer-name" *ngIf="message.customerName">
+              {{ message.customerName }}
+            </div>
+            <div class="customer-unknown" *ngIf="!message.customerName">
+              לקוח לא מזוהה
+            </div>
+            <div class="message-text">{{ message.messageText }}</div>
+            <div class="message-actions">
+              <button mat-icon-button color="primary" (click)="markAsProcessed(message)" matTooltip="סמן כטופל">
+                <mat-icon>check_circle</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="messages.length === 0">
+            <mat-icon>inbox</mat-icon>
+            <span>אין הודעות ממתינות</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Open Service Calls Panel -->
+      <div class="panel service-calls-panel">
+        <div class="panel-header">
+          <h2>
+            <mat-icon>build</mat-icon>
+            {{ terms.whatsappOpenServiceCalls }}
+          </h2>
+          <span class="badge" *ngIf="openServiceCalls.length">{{ openServiceCalls.length }}</span>
+        </div>
+        <div class="panel-content">
+          <div class="service-call-item" *ngFor="let call of openServiceCalls" (click)="openServiceCall(call)">
+            <div class="call-header">
+              <span class="call-number">#{{ call.callNumber }}</span>
+              <span class="call-status" [class]="call.status.id">{{ call.status.caption }}</span>
+            </div>
+            <div class="call-site" *ngIf="call.site">{{ call.site }}</div>
+            <div class="call-address">{{ call.address }}</div>
+            <div class="call-description" *ngIf="call.description">{{ call.description }}</div>
+            <div class="call-contact" *ngIf="call.contactName">
+              {{ call.contactName }} - {{ call.contactMobile }}
+            </div>
+            <div class="call-time">{{ formatDate(call.createDate) }}</div>
+          </div>
+          <div class="empty-state" *ngIf="openServiceCalls.length === 0">
+            <mat-icon>check_circle</mat-icon>
+            <span>אין קריאות שירות פתוחות</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Log Panel -->
+      <div class="panel logs-panel">
+        <div class="panel-header">
+          <h2>
+            <mat-icon>history</mat-icon>
+            {{ terms.whatsappActivityLog }}
+          </h2>
+        </div>
+        <div class="panel-content">
+          <div class="log-item" *ngFor="let log of logs" [class]="log.logType.id">
+            <div class="log-header">
+              <span class="log-type">{{ log.logType.caption }}</span>
+              <span class="log-time">{{ formatTime(log.createDate) }}</span>
+            </div>
+            <div class="log-phone" *ngIf="log.phone">{{ log.phone }}</div>
+            <div class="log-details">{{ log.details }}</div>
+          </div>
+          <div class="empty-state" *ngIf="logs.length === 0">
+            <mat-icon>list</mat-icon>
+            <span>אין פעילות</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER (sticky bottom) -->
+  <div class="page-footer">
+  </div>
+</div>

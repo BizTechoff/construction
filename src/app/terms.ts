@@ -103,5 +103,24 @@ export const terms = {
   callNumber: 'מספר קריאה',
   site: 'אתר',
   description: 'תיאור הקריאה',
-  status: 'סטטוס'
+  status: 'סטטוס',
+
+  // WhatsApp module
+  whatsapp: 'ווטסאפ',
+  whatsappDashboard: 'לוח בקרה - ווטסאפ',
+  whatsappPhone: 'מספר טלפון',
+  whatsappCustomerId: 'לקוח',
+  whatsappCustomerName: 'שם לקוח',
+  whatsappMessageText: 'תוכן הודעה',
+  whatsappMessageType: 'סוג הודעה',
+  whatsappMessageStatus: 'סטטוס הודעה',
+  whatsappRelatedServiceCallId: 'קריאת שירות קשורה',
+  whatsappRelatedMessageId: 'הודעה קשורה',
+  whatsappLogType: 'סוג אירוע',
+  whatsappLogDetails: 'פרטים',
+  whatsappPendingMessages: 'הודעות ממתינות',
+  whatsappOpenServiceCalls: 'קריאות פתוחות',
+  whatsappTodayMessages: 'הודעות היום',
+  whatsappTodayServiceCalls: 'קריאות היום',
+  whatsappActivityLog: 'יומן פעילות'
 }

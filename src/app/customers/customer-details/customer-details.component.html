@@ -1,42 +1,44 @@
-<!-- Header -->
-<div class="modal-header">
-  <h2>{{ isNew ? 'הוספת לקוח חדש' : 'עריכת לקוח' }}</h2>
-</div>
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header">
+    <h2>{{ isNew ? 'הוספת לקוח חדש' : 'עריכת לקוח' }}</h2>
+  </div>
 
-<!-- Content -->
-<div class="modal-content">
-  <!-- Customer Name -->
-  <app-base-input-field
-    [label]="terms.customerName"
-    type="text"
-    [(ngModel)]="customer.name"
-    [required]="true">
-  </app-base-input-field>
+  <!-- Content -->
+  <div class="modal-content">
+    <!-- Customer Name -->
+    <app-base-input-field
+      [label]="terms.customerName"
+      type="text"
+      [(ngModel)]="customer.name"
+      [required]="true">
+    </app-base-input-field>
 
-  <!-- Mobile -->
-  <app-base-input-field
-    [label]="terms.mobile"
-    type="text"
-    [(ngModel)]="customer.mobile">
-  </app-base-input-field>
+    <!-- Mobile -->
+    <app-base-input-field
+      [label]="terms.mobile"
+      type="text"
+      [(ngModel)]="customer.mobile">
+    </app-base-input-field>
 
-  <!-- Email -->
-  <app-base-input-field
-    [label]="terms.email"
-    type="email"
-    [(ngModel)]="customer.email">
-  </app-base-input-field>
+    <!-- Email -->
+    <app-base-input-field
+      [label]="terms.email"
+      type="email"
+      [(ngModel)]="customer.email">
+    </app-base-input-field>
 
-  <!-- Address -->
-  <app-base-input-field
-    [label]="terms.address"
-    type="text"
-    [(ngModel)]="customer.address">
-  </app-base-input-field>
-</div>
+    <!-- Address -->
+    <app-base-input-field
+      [label]="terms.address"
+      type="text"
+      [(ngModel)]="customer.address">
+    </app-base-input-field>
+  </div>
 
-<!-- Footer -->
-<div class="modal-footer">
-  <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
-  <button mat-raised-button color="primary" (click)="save()">{{ terms.ok }}</button>
+  <!-- Footer -->
+  <div class="modal-footer">
+    <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
+    <button mat-raised-button color="primary" (click)="save()">{{ terms.ok }}</button>
+  </div>
 </div>

@@ -52,6 +52,8 @@ import { ContactSelectionComponent } from './customers/contact-selection/contact
 import { ServiceCallListComponent } from './service-calls/service-call-list/service-call-list.component';
 import { ServiceCallDetailsComponent } from './service-calls/service-call-details/service-call-details.component';
 import { ServiceCallSelectionComponent } from './service-calls/service-call-selection/service-call-selection.component';
+import { WhatsAppDashboardComponent } from './whatsapp/whatsapp-dashboard/whatsapp-dashboard.component';
+import { WhatsAppService } from './whatsapp/whatsapp.service';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,7 @@ import { ServiceCallSelectionComponent } from './service-calls/service-call-sele
     ServiceCallListComponent,
     ServiceCallDetailsComponent,
     ServiceCallSelectionComponent,
+    WhatsAppDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,6 +101,7 @@ import { ServiceCallSelectionComponent } from './service-calls/service-call-sele
   providers: [
     UIToolsService,
     BusyService,
+    WhatsAppService,
     NotAuthenticatedGuard,
     AuthenticatedGuard,
     AdminGuard,

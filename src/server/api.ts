@@ -9,11 +9,14 @@ import { Message } from '../app/messages/message'
 import { Customer } from '../app/customers/customer'
 import { Contact } from '../app/customers/contact'
 import { ServiceCall } from '../app/service-calls/service-call'
+import { WhatsAppMessage } from '../app/whatsapp/whatsapp-message'
+import { WhatsAppLog } from '../app/whatsapp/whatsapp-log'
 import { ProjectsController } from '../shared/controllers/ProjectsController'
 import { CustomersController } from '../shared/controllers/CustomersController'
 import { ServiceCallsController } from '../shared/controllers/ServiceCallsController'
+import { WhatsAppController } from '../shared/controllers/WhatsAppController'
 
-export const entities = [User, Project, Message, Customer, Contact, ServiceCall]
+export const entities = [User, Project, Message, Customer, Contact, ServiceCall, WhatsAppMessage, WhatsAppLog]
 export const api = remultExpress({
   admin: true,
   controllers: [
@@ -22,7 +25,8 @@ export const api = remultExpress({
     UsersController,
     ProjectsController,
     CustomersController,
-    ServiceCallsController
+    ServiceCallsController,
+    WhatsAppController
   ],
   entities,
   getUser,

@@ -1,6 +1,6 @@
 @import '../../../styles/variables';
 
-app-customer-details {
+.modal-container {
   display: flex;
   flex-direction: column;
   min-width: 500px;
@@ -14,9 +14,6 @@ app-customer-details {
   padding: 24px 28px;
   background: $mat-toolbar-bg !important;
   border-bottom: none;
-  position: sticky;
-  top: 0;
-  z-index: 10;
   flex-shrink: 0;
 
   h2 {
@@ -52,9 +49,6 @@ app-customer-details {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
   flex-shrink: 0;
 
   button {

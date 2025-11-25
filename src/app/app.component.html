@@ -41,7 +41,7 @@
       <mat-nav-list role="list">
         <ng-container *ngFor="let m of router.config">
           <mat-divider style="opacity: .2;"
-            *ngIf="shouldDisplayRoute(m) && ['accounts', 'projects'].includes(m.path!)">
+            *ngIf="shouldDisplayRoute(m) && ['accounts', 'projects', 'customers'].includes(m.path!)">
           </mat-divider>
           <a mat-list-item *ngIf="shouldDisplayRoute(m)" routerLinkActive="active-route" [routerLink]="m.path"
             (click)="routeClicked()">

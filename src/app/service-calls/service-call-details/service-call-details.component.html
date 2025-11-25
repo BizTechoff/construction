@@ -1,76 +1,78 @@
-<!-- Header -->
-<div class="modal-header">
-  <h2>{{ isNew ? 'פתיחת קריאת שירות' : 'עריכת קריאה #' + serviceCall.callNumber }}</h2>
-</div>
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header">
+    <h2>{{ isNew ? 'פתיחת קריאת שירות' : 'עריכת קריאה #' + serviceCall.callNumber }}</h2>
+  </div>
 
-<!-- Content -->
-<div class="modal-content">
-  <!-- Customer Selection -->
-  <div class="selection-field" (click)="selectCustomer()">
-    <label>{{ terms.customer }} *</label>
-    <div class="selection-value" [class.placeholder]="!selectedCustomer">
-      {{ selectedCustomer?.name || 'בחר לקוח...' }}
-      <mat-icon>arrow_drop_down</mat-icon>
+  <!-- Content -->
+  <div class="modal-content">
+    <!-- Customer Selection -->
+    <div class="selection-field" (click)="selectCustomer()">
+      <label>{{ terms.customer }} *</label>
+      <div class="selection-value" [class.placeholder]="!selectedCustomer">
+        {{ selectedCustomer?.name || 'בחר לקוח...' }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </div>
+    </div>
+
+    <!-- Address -->
+    <app-base-input-field
+      [label]="terms.address"
+      type="text"
+      [(ngModel)]="serviceCall.address">
+    </app-base-input-field>
+
+    <!-- Site -->
+    <app-base-input-field
+      [label]="terms.site"
+      type="text"
+      [(ngModel)]="serviceCall.site">
+    </app-base-input-field>
+
+    <!-- Description -->
+    <app-base-input-field
+      [label]="terms.description"
+      type="text"
+      [(ngModel)]="serviceCall.description">
+    </app-base-input-field>
+
+    <!-- Contact Selection -->
+    <div class="selection-field" (click)="selectContact()">
+      <label>{{ terms.contact }}</label>
+      <div class="selection-value" [class.placeholder]="!serviceCall.contactName">
+        {{ serviceCall.contactName || 'בחר איש קשר...' }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </div>
+    </div>
+
+    <!-- Contact Name (editable) -->
+    <app-base-input-field
+      [label]="terms.contactName"
+      type="text"
+      [(ngModel)]="serviceCall.contactName">
+    </app-base-input-field>
+
+    <!-- Contact Mobile (editable) -->
+    <app-base-input-field
+      [label]="terms.contactMobile"
+      type="text"
+      [(ngModel)]="serviceCall.contactMobile">
+    </app-base-input-field>
+
+    <!-- Status -->
+    <div class="status-field">
+      <label>{{ terms.status }}</label>
+      <mat-form-field appearance="outline">
+        <select matNativeControl [(ngModel)]="serviceCall.status">
+          <option *ngFor="let option of statusOptions" [ngValue]="option">{{ option.caption }}</option>
+        </select>
+      </mat-form-field>
     </div>
   </div>
 
-  <!-- Address -->
-  <app-base-input-field
-    [label]="terms.address"
-    type="text"
-    [(ngModel)]="serviceCall.address">
-  </app-base-input-field>
-
-  <!-- Site -->
-  <app-base-input-field
-    [label]="terms.site"
-    type="text"
-    [(ngModel)]="serviceCall.site">
-  </app-base-input-field>
-
-  <!-- Description -->
-  <app-base-input-field
-    [label]="terms.description"
-    type="text"
-    [(ngModel)]="serviceCall.description">
-  </app-base-input-field>
-
-  <!-- Contact Selection -->
-  <div class="selection-field" (click)="selectContact()">
-    <label>{{ terms.contact }}</label>
-    <div class="selection-value" [class.placeholder]="!serviceCall.contactName">
-      {{ serviceCall.contactName || 'בחר איש קשר...' }}
-      <mat-icon>arrow_drop_down</mat-icon>
-    </div>
+  <!-- Footer -->
+  <div class="modal-footer">
+    <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="!serviceCall.customerId">{{ terms.ok }}</button>
   </div>
-
-  <!-- Contact Name (editable) -->
-  <app-base-input-field
-    [label]="terms.contactName"
-    type="text"
-    [(ngModel)]="serviceCall.contactName">
-  </app-base-input-field>
-
-  <!-- Contact Mobile (editable) -->
-  <app-base-input-field
-    [label]="terms.contactMobile"
-    type="text"
-    [(ngModel)]="serviceCall.contactMobile">
-  </app-base-input-field>
-
-  <!-- Status -->
-  <div class="status-field">
-    <label>{{ terms.status }}</label>
-    <mat-form-field appearance="outline">
-      <select matNativeControl [(ngModel)]="serviceCall.status">
-        <option *ngFor="let option of statusOptions" [ngValue]="option">{{ option.caption }}</option>
-      </select>
-    </mat-form-field>
-  </div>
-</div>
-
-<!-- Footer -->
-<div class="modal-footer">
-  <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
-  <button mat-raised-button color="primary" (click)="save()" [disabled]="!serviceCall.customerId">{{ terms.ok }}</button>
 </div>
