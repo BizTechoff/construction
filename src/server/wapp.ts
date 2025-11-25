@@ -5,11 +5,12 @@ import { WhatsAppMessageStatus } from '../app/whatsapp/whatsapp-message.status'
 import { WhatsAppLog } from '../app/whatsapp/whatsapp-log'
 import { WhatsAppLogType } from '../app/whatsapp/whatsapp-log.type'
 import { Customer } from '../app/customers/customer'
+import { handleBotMessage } from './wapp-bot'
 
 // Green API Configuration
-const GREEN_API_URL = process.env['GREEN_API_URL'] || 'https://api.green-api.com'
-const GREEN_API_INSTANCE = process.env['GREEN_API_INSTANCE'] || ''
-const GREEN_API_TOKEN = process.env['GREEN_API_TOKEN'] || ''
+const GREEN_API_URL = process.env['BOT_GREEN_API_URL'] || 'https://api.green-api.com'
+const GREEN_API_INSTANCE = process.env['BOT_INSTANCE_ID'] || ''
+const GREEN_API_TOKEN = process.env['BOT_TOKEN'] || ''
 
 export interface GreenApiSendResponse {
   idMessage: string
@@ -232,6 +233,15 @@ export async function processIncomingWebhook(body: any): Promise<void> {
         details: `לקוח לא נמצא עבור מספר: ${phone}`,
         relatedMessageId: message.id
       })
+    }
+
+    // Handle bot conversation flow
+    if (messageText && !messageText.startsWith('[')) {
+      await handleBotMessage(phone, messageText, senderName)
+
+      // Mark message as processed
+      message.status = WhatsAppMessageStatus.processed
+      await message.save()
     }
 
   } catch (error) {
