@@ -16,7 +16,7 @@ import { CustomersController } from '../shared/controllers/CustomersController'
 import { ServiceCallsController } from '../shared/controllers/ServiceCallsController'
 import { WhatsAppController } from '../shared/controllers/WhatsAppController'
 
-export const entities = [User, Project, Message, Customer, Contact, ServiceCall, WhatsAppMessage, WhatsAppLog]
+export const entities = [User, Message, Customer, Contact, ServiceCall, WhatsAppMessage, WhatsAppLog]
 export const api = remultExpress({
   admin: true,
   controllers: [
