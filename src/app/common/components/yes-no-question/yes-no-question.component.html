@@ -1,0 +1,12 @@
+<div class="yes-no-dialog">
+  <h2 mat-dialog-title>{{ args.message }}</h2>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" *ngIf="args.isQuestion">
+      ביטול
+    </button>
+    <button mat-raised-button color="primary" (click)="onOk()">
+      אישור
+    </button>
+  </mat-dialog-actions>
+</div>

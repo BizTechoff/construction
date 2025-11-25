@@ -1,0 +1,35 @@
+<!-- Header -->
+<div class="modal-header">
+  <h2>{{ isNew ? 'הוספת פרויקט חדש' : 'עריכת פרויקט' }}</h2>
+</div>
+
+<!-- Content -->
+<div class="modal-content">
+  <!-- Project Name -->
+  <app-base-input-field
+    [label]="terms.projectName"
+    type="text"
+    [(ngModel)]="project.name"
+    [required]="true">
+  </app-base-input-field>
+
+  <!-- Description -->
+  <app-base-input-field
+    [label]="terms.projectDescription"
+    type="text"
+    [(ngModel)]="project.description">
+  </app-base-input-field>
+
+  <!-- Location -->
+  <app-base-input-field
+    [label]="terms.projectLocation"
+    type="text"
+    [(ngModel)]="project.location">
+  </app-base-input-field>
+</div>
+
+<!-- Footer -->
+<div class="modal-footer">
+  <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
+  <button mat-raised-button color="primary" (click)="save()">{{ terms.ok }}</button>
+</div>

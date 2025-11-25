@@ -1,0 +1,61 @@
+<!-- Header -->
+<div class="modal-header">
+  <h2>{{ isNew ? 'הוספת משתמש חדש' : 'עריכת משתמש' }}</h2>
+</div>
+
+<!-- Content -->
+<div class="modal-content">
+  <!-- Username -->
+  <app-base-input-field
+    [label]="terms.username"
+    type="text"
+    [(ngModel)]="user.name"
+    [disabled]="!isNew && !isAdmin()"
+    [required]="true">
+  </app-base-input-field>
+
+  <!-- Password (only for new users) -->
+  <app-base-input-field
+    *ngIf="isNew"
+    label="סיסמה"
+    type="password"
+    [(ngModel)]="password"
+    [required]="true">
+  </app-base-input-field>
+
+  <!-- Confirm Password (only for new users) -->
+  <app-base-input-field
+    *ngIf="isNew"
+    label="אימות סיסמה"
+    type="password"
+    [(ngModel)]="confirmPassword"
+    [required]="true">
+  </app-base-input-field>
+
+  <!-- Admin checkbox -->
+  <div class="checkbox-field" *ngIf="isAdmin()">
+    <mat-checkbox [(ngModel)]="user.admin" (click)="onRoleChecked(Roles.admin)">
+      {{ terms.admin }}
+    </mat-checkbox>
+  </div>
+
+  <!-- Manager checkbox -->
+  <div class="checkbox-field" *ngIf="isAdmin()">
+    <mat-checkbox [(ngModel)]="user.manager" (click)="onRoleChecked(Roles.manager)">
+      {{ terms.manager }}
+    </mat-checkbox>
+  </div>
+
+  <!-- Disabled checkbox -->
+  <div class="checkbox-field" *ngIf="isAdmin() && !this.isNew">
+    <mat-checkbox [(ngModel)]="user.disabled">
+      {{ terms.disabled }}
+    </mat-checkbox>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="modal-footer">
+  <button mat-button (click)="cancel()">ביטול</button>
+  <button mat-raised-button color="primary" (click)="save()">שמור</button>
+</div>

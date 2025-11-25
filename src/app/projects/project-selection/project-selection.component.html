@@ -1,0 +1,78 @@
+<!-- Header -->
+<div class="modal-header">
+  <h2>{{ args.multiSelect ? 'בחירת פרויקטים' : 'בחירת פרויקט' }}</h2>
+</div>
+
+<!-- Search -->
+<div class="search-container" *ngIf="!loading && projects.length > 0">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="searchText"
+      (ngModelChange)="onSearchChange()"
+      placeholder="חיפוש לפי שם פרויקט או מיקום..."
+      type="text">
+    <button
+      *ngIf="searchText"
+      matSuffix
+      mat-icon-button
+      (click)="searchText=''; onSearchChange()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Content -->
+<div class="modal-content">
+  <div *ngIf="loading" class="loading-message">טוען פרויקטים...</div>
+
+  <div *ngIf="!loading && projects.length === 0" class="no-data-message">
+    לא נמצאו פרויקטים
+  </div>
+
+  <div *ngIf="!loading && filteredProjects.length === 0 && projects.length > 0" class="no-data-message">
+    לא נמצאו תוצאות חיפוש
+  </div>
+
+  <div *ngIf="!loading && filteredProjects.length > 0" class="projects-list">
+    <div
+      *ngFor="let project of filteredProjects"
+      class="project-item"
+      [class.selected]="isSelected(project)"
+      (click)="toggleSelection(project)">
+      <mat-checkbox
+        [checked]="isSelected(project)"
+        [disabled]="false"
+        (click)="$event.stopPropagation()">
+      </mat-checkbox>
+      <div class="project-info">
+        <div class="project-name">{{ project.name }}</div>
+        <div class="project-details" *ngIf="project.location">
+          <mat-icon>location_on</mat-icon>
+          <span>{{ project.location }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="modal-footer">
+  <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="confirm()"
+    [disabled]="selectedProjects.size === 0">
+    {{ terms.ok }}
+  </button>
+  <button
+    mat-mini-fab
+    color="accent"
+    (click)="addNew()"
+    class="add-button"
+    title="הוסף פרויקט חדש">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

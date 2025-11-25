@@ -1,0 +1,61 @@
+.base-input-field {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+
+  label {
+    position: absolute;
+    right: 12px;
+    top: 16px;
+    font-size: 16px;
+    color: #666;
+    transition: all 0.2s ease-out;
+    pointer-events: none;
+    background: transparent;
+    padding: 0 4px;
+    transform-origin: top right;
+
+    &.floating {
+      top: -8px;
+      font-size: 14px;
+      color: #666;
+      background: white;
+    }
+
+    .required-marker {
+      color: #f44336;
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 16px 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease-out;
+    background: transparent;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: #1976d2;
+      border-width: 2px;
+      padding: 15px 11px; // Compensate for thicker border
+    }
+
+    &:disabled {
+      background-color: #f5f5f5;
+      cursor: not-allowed;
+      color: #999;
+    }
+  }
+
+  &.focused label {
+    color: #1976d2;
+  }
+
+  &.has-value label {
+    // Ensure label stays floating even when not focused
+  }
+}

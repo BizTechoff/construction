@@ -1,0 +1,42 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <a href="https://biztechoff.co.il/" target="_blank">
+        <img src="./assets/logo-transparent.png" alt="Logo" class="login-logo">
+      </a>
+    </div>
+
+    <!-- Login Form -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>התחברות לפלטפורמה</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form (submit)="signIn()">
+          <app-base-input-field
+            label="שם משתמש"
+            [(ngModel)]="signer.user"
+            name="user"
+            [required]="true"
+          ></app-base-input-field>
+
+          <app-base-input-field
+            label="סיסמה"
+            type="password"
+            [(ngModel)]="signer.password"
+            name="password"
+            [required]="true"
+          ></app-base-input-field>
+
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit">
+              התחבר
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

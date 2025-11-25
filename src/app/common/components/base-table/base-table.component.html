@@ -1,0 +1,179 @@
+<div class="base-table-container">
+  <!-- Toolbar: Filter + Actions -->
+  <div class="table-toolbar" *ngIf="showFilter || showActions">
+    <div class="filter-section" *ngIf="showFilter">
+      <input
+        type="text"
+        class="filter-input"
+        placeholder="חיפוש..."
+        [(ngModel)]="filterText"
+        (input)="onFilterChange($event)"
+      />
+      <button class="clear-filter" *ngIf="filterText" (click)="clearFilter()">
+        ✕
+      </button>
+    </div>
+
+    <div class="toolbar-actions">
+      <button
+        *ngIf="showAdd && !readonly"
+        class="add-btn"
+        (click)="onAdd.emit()"
+        title="הוסף חדש"
+      >
+        ➕ {{ addButtonText }}
+      </button>
+      <button class="refresh-btn" (click)="refresh()" title="רענון">
+        🔄
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Wrapper (Scrollable) -->
+  <div class="table-wrapper">
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="loading">
+      <div class="spinner"></div>
+      <span>טוען...</span>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!loading && (!data || data.length === 0)">
+      <p>{{ emptyMessage }}</p>
+    </div>
+
+    <!-- Table -->
+    <table *ngIf="!loading && data && data.length > 0">
+      <thead>
+        <tr>
+          <!-- Selection Column -->
+          <th class="selection-column" *ngIf="selectable">
+            <input
+              type="checkbox"
+              [(ngModel)]="selectAll"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+
+          <!-- Data Columns -->
+          <th
+            *ngFor="let column of visibleColumns"
+            [class]="column.headerClass"
+            [ngStyle]="column.headerStyle"
+            [style.width]="column.width"
+            (click)="sortColumn(column)"
+            [class.sortable]="sortable && column.sortable !== false"
+          >
+            {{ column.header || column.field }}
+            <span class="sort-icon" *ngIf="sortable && column.sortable !== false">
+              {{ getSortIcon(column) }}
+            </span>
+          </th>
+
+          <!-- Actions Column -->
+          <th class="actions-column" *ngIf="showActions && !readonly">
+            פעולות
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let row of data; trackBy: trackByField"
+          (click)="handleRowClick(row)"
+          [class.selected]="isRowSelected(row)"
+        >
+          <!-- Selection Column -->
+          <td class="selection-column" *ngIf="selectable">
+            <input
+              type="checkbox"
+              [checked]="isRowSelected(row)"
+              (change)="toggleRowSelection(row)"
+              (click)="$event.stopPropagation()"
+            />
+          </td>
+
+          <!-- Data Columns -->
+          <td
+            *ngFor="let column of visibleColumns"
+            [class]="column.cssClass"
+            [ngStyle]="column.style"
+          >
+            <!-- Custom Template -->
+            <ng-container *ngIf="getColumnTemplate(column.field) as template">
+              <ng-container
+                *ngTemplateOutlet="template; context: { $implicit: row }"
+              ></ng-container>
+            </ng-container>
+
+            <!-- Default Value -->
+            <ng-container *ngIf="!getColumnTemplate(column.field)">
+              {{ getCellValue(row, column) }}
+            </ng-container>
+          </td>
+
+          <!-- Actions Column -->
+          <td class="actions-column" *ngIf="showActions && !readonly">
+            <button
+              *ngIf="showCustomAction"
+              class="action-btn custom-btn"
+              (click)="handleCustomAction(row, $event)"
+              [title]="customActionTitle"
+            >
+              <mat-icon>{{ customActionIcon }}</mat-icon>
+            </button>
+            <button
+              class="action-btn edit-btn"
+              (click)="handleEdit(row, $event)"
+              title="עריכה"
+            >
+              ✎
+            </button>
+            <button
+              class="action-btn delete-btn"
+              (click)="handleDelete(row, $event)"
+              title="מחיקה"
+            >
+              🗑
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer: Pagination -->
+  <div class="table-footer" *ngIf="showPagination && totalRecords > 0">
+    <div class="pagination-info">
+      מציג {{ (currentPage - 1) * pageSize + 1 }}-{{ Math.min(currentPage * pageSize, totalRecords) }}
+      מתוך {{ totalRecords }}
+    </div>
+
+    <div class="pagination-controls">
+      <button
+        class="page-btn"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1"
+      >
+        ►
+      </button>
+
+      <button
+        *ngFor="let page of displayedPages"
+        class="page-btn"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        class="page-btn"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+      >
+        ◄
+      </button>
+    </div>
+  </div>
+</div>

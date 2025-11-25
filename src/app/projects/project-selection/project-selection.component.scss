@@ -1,0 +1,189 @@
+@import '../../../styles/variables';
+
+// Override Material Dialog styles
+::ng-deep {
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 28px !important;
+    overflow: hidden !important;
+  }
+}
+
+app-project-selection {
+  display: flex;
+  flex-direction: column;
+  min-width: 600px;
+  max-width: 800px;
+  height: 85vh;
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 24px 28px;
+  background: $mat-toolbar-bg !important;
+  border-bottom: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
+
+  h2 {
+    margin: 0 !important;
+    font-size: 22px !important;
+    font-weight: 500 !important;
+    color: $mat-toolbar-color !important;
+    letter-spacing: 0.3px;
+  }
+}
+
+.search-container {
+  padding: 16px 28px;
+  background: #fafafa;
+  border-bottom: 1px solid #e0e0e0;
+
+  .search-field {
+    width: 100%;
+    font-size: 14px;
+
+    ::ng-deep {
+      .mat-mdc-form-field-flex {
+        background: white;
+      }
+    }
+  }
+}
+
+.modal-content {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fafafa;
+
+  .loading-message,
+  .no-data-message {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+  }
+
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+
+    .project-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 28px;
+      background: white;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #f5f5f5;
+      }
+
+      &.selected {
+        background: #e3f2fd;
+
+        &:hover {
+          background: #bbdefb;
+        }
+      }
+
+      mat-checkbox {
+        margin-left: 16px;
+      }
+
+      .project-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .project-name {
+          font-size: 16px;
+          font-weight: 500;
+          color: $text-primary;
+        }
+
+        .project-details {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 14px;
+          color: $text-secondary;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-footer {
+  padding: 20px 28px;
+  background: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  flex-shrink: 0;
+
+  .add-button {
+    margin-left: auto;
+  }
+
+  button {
+    font-weight: 500;
+    min-width: 100px;
+    height: 40px;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: all 0.2s;
+
+    &[mat-raised-button][color="primary"] {
+      background: $add-button-bg;
+      color: $add-button-color;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:hover:not(:disabled) {
+        background: $add-button-bg-hover;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        background: #ccc;
+        color: #888;
+        box-shadow: none;
+      }
+    }
+
+    &[mat-button] {
+      color: $text-secondary;
+      border: 1px solid #ddd;
+      background: white;
+
+      &:hover {
+        background: #f9f9f9;
+        border-color: #bbb;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<div class="base-input-field" [class.focused]="isFocused" [class.has-value]="hasValue">
+  <label [class.floating]="shouldFloatLabel">
+    {{ label }}
+    <span *ngIf="required" class="required-marker">*</span>
+  </label>
+  <input
+    [type]="type"
+    [value]="value"
+    [disabled]="disabled"
+    [required]="required"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+  />
+</div>

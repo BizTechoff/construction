@@ -1,0 +1,38 @@
+<div
+  class="base-input-field selection-field"
+  [class.focused]="isFocused"
+  [class.has-value]="hasValue"
+  [class.disabled]="disabled"
+  (click)="openSelection()">
+
+  <label [class.floating]="shouldFloatLabel">
+    {{ label }}
+    <span *ngIf="required" class="required-marker">*</span>
+  </label>
+
+  <div class="input-container">
+    <input
+      type="text"
+      [value]="displayValue"
+      [disabled]="disabled"
+      [required]="required"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      readonly
+      placeholder=""
+    />
+    <button
+      *ngIf="hasValue && !disabled"
+      class="clear-button"
+      (click)="clear($event)"
+      type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button
+      class="search-button"
+      [disabled]="disabled"
+      type="button">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+</div>

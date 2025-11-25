@@ -1,0 +1,92 @@
+@import '../../../styles/variables';
+
+app-project-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  max-width: 600px;
+  height: auto;
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 24px 28px;
+  background: $mat-toolbar-bg !important;
+  border-bottom: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
+
+  h2 {
+    margin: 0 !important;
+    font-size: 22px !important;
+    font-weight: 500 !important;
+    color: $mat-toolbar-color !important;
+    letter-spacing: 0.3px;
+  }
+}
+
+.modal-content {
+  padding: 28px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #fafafa;
+
+  app-base-input-field {
+    background: white;
+    border-radius: 4px;
+    padding: 4px 0;
+  }
+}
+
+.modal-footer {
+  padding: 20px 28px;
+  background: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  flex-shrink: 0;
+
+  button {
+    font-weight: 500;
+    min-width: 100px;
+    height: 40px;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: all 0.2s;
+
+    &[mat-raised-button][color="primary"] {
+      background: $add-button-bg;
+      color: $add-button-color;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background: $add-button-bg-hover;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+      }
+    }
+
+    &[mat-button] {
+      color: $text-secondary;
+      border: 1px solid #ddd;
+      background: white;
+
+      &:hover {
+        background: #f9f9f9;
+        border-color: #bbb;
+      }
+    }
+  }
+}

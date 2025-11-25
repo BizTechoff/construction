@@ -1,0 +1,140 @@
+@import '../../styles/variables';
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  padding: 60px 20px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  max-width: 550px;
+  width: 100%;
+}
+
+.logo-section {
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo {
+  max-width: 100%;
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+}
+
+mat-card {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+  mat-card-header {
+    margin-bottom: 20px;
+
+    mat-card-title {
+      font-size: 24px;
+      font-weight: 500;
+      color: $text-primary;
+      text-align: center;
+    }
+  }
+
+  mat-card-content {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+
+  button {
+    min-width: 200px;
+    height: 45px;
+    font-size: 16px;
+    font-weight: 500;
+    background: $add-button-bg;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+
+    &:hover {
+      background: $add-button-bg-hover;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    padding: 20px 15px;
+  }
+
+  .login-card {
+    gap: 20px;
+    max-width: 450px;
+  }
+
+  .logo-section {
+    padding: 15px;
+    max-width: 400px;
+  }
+
+  .login-logo {
+    width: 85%;
+  }
+}
+
+@media (max-width: 500px) {
+  .login-container {
+    padding: 15px 10px;
+  }
+
+  .login-card {
+    gap: 15px;
+  }
+
+  .logo-section {
+    padding: 10px;
+    max-width: 320px;
+  }
+
+  .login-logo {
+    width: 80%;
+  }
+
+  mat-card {
+    padding: 16px;
+
+    mat-card-title {
+      font-size: 20px;
+    }
+  }
+
+  .button-row button {
+    min-width: 150px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
