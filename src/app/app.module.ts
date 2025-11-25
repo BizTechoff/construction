@@ -45,6 +45,13 @@ import { ProjectDetailsComponent } from './projects/project-details/project-deta
 import { BusyService } from './common/components/wait/busyService';
 import { ProjectSelectionFieldComponent } from './projects/project-selection-field/project-selection-field.component';
 import { ProjectSelectionComponent } from './projects/project-selection/project-selection.component';
+import { CustomerListComponent } from './customers/customer-list/customer-list.component';
+import { CustomerDetailsComponent } from './customers/customer-details/customer-details.component';
+import { CustomerSelectionComponent } from './customers/customer-selection/customer-selection.component';
+import { ContactSelectionComponent } from './customers/contact-selection/contact-selection.component';
+import { ServiceCallListComponent } from './service-calls/service-call-list/service-call-list.component';
+import { ServiceCallDetailsComponent } from './service-calls/service-call-details/service-call-details.component';
+import { ServiceCallSelectionComponent } from './service-calls/service-call-selection/service-call-selection.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +68,13 @@ import { ProjectSelectionComponent } from './projects/project-selection/project-
     ProjectDetailsComponent,
     ProjectSelectionFieldComponent,
     ProjectSelectionComponent,
+    CustomerListComponent,
+    CustomerDetailsComponent,
+    CustomerSelectionComponent,
+    ContactSelectionComponent,
+    ServiceCallListComponent,
+    ServiceCallDetailsComponent,
+    ServiceCallSelectionComponent,
   ],
   imports: [
     BrowserModule,

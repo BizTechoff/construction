@@ -6,16 +6,23 @@ import { UpdatePasswordController } from '../app/users/UpdatePasswordController'
 import { UsersController } from '../shared/controllers/UsersController'
 import { Project } from '../app/projects/project'
 import { Message } from '../app/messages/message'
+import { Customer } from '../app/customers/customer'
+import { Contact } from '../app/customers/contact'
+import { ServiceCall } from '../app/service-calls/service-call'
 import { ProjectsController } from '../shared/controllers/ProjectsController'
+import { CustomersController } from '../shared/controllers/CustomersController'
+import { ServiceCallsController } from '../shared/controllers/ServiceCallsController'
 
-export const entities = [User, Project, Message]
+export const entities = [User, Project, Message, Customer, Contact, ServiceCall]
 export const api = remultExpress({
   admin: true,
   controllers: [
     SignInController,
     UpdatePasswordController,
     UsersController,
-    ProjectsController
+    ProjectsController,
+    CustomersController,
+    ServiceCallsController
   ],
   entities,
   getUser,

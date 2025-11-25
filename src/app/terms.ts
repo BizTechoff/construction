@@ -80,5 +80,28 @@ export const terms = {
   recipientIds: 'נמענים',
   sendStatus: 'סטטוס שליחה',
   sentDate: 'תאריך שליחה',
-  sendMessage: 'שלח הודעה'
+  sendMessage: 'שלח הודעה',
+
+  // Customers module
+  customers: 'לקוחות',
+  customer: 'לקוח',
+  customerName: 'שם לקוח',
+  customerId: 'לקוח',
+  email: 'אימייל',
+  address: 'כתובת',
+
+  // Contacts module
+  contacts: 'אנשי קשר',
+  contact: 'איש קשר',
+  contactName: 'שם איש קשר',
+  contactMobile: 'נייד איש קשר',
+  isDefaultContact: 'ברירת מחדל',
+
+  // Service Calls module
+  serviceCalls: 'קריאות שירות',
+  serviceCall: 'קריאת שירות',
+  callNumber: 'מספר קריאה',
+  site: 'אתר',
+  description: 'תיאור הקריאה',
+  status: 'סטטוס'
 }

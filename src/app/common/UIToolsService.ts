@@ -3,6 +3,11 @@ import { MatSnackBar } from "@angular/material/snack-bar"
 import { UserDetailsModalComponent } from "../users/user-details-modal/user-details-modal.component"
 import { ProjectDetailsComponent } from "../projects/project-details/project-details.component"
 import { ProjectSelectionComponent } from "../projects/project-selection/project-selection.component"
+import { CustomerDetailsComponent } from "../customers/customer-details/customer-details.component"
+import { CustomerSelectionComponent } from "../customers/customer-selection/customer-selection.component"
+import { ContactSelectionComponent } from "../customers/contact-selection/contact-selection.component"
+import { ServiceCallDetailsComponent } from "../service-calls/service-call-details/service-call-details.component"
+import { ServiceCallSelectionComponent } from "../service-calls/service-call-selection/service-call-selection.component"
 import { YesNoQuestionComponent } from "./components/yes-no-question/yes-no-question.component"
 import { openDialog } from "./openDialog"
 import { terms } from "../terms"
@@ -101,7 +106,47 @@ export class UIToolsService {
   async openProjectSelection(selectedIds: string[] = [], multiSelect: boolean = false) {
     return await openDialog(
       ProjectSelectionComponent,
-      (d) => d.args = { selectedIds: selectedIds, multiSelect: multiSelect }
+      (d) => d.args = { selectedIds: selectedIds, multiSelect: multiSelect, allowAdd: true, allowEdit: true, allowDelete: true }
+    )
+  }
+
+  // Customer dialogs
+  async openCustomerDetails(customerId = '') {
+    return await openDialog(
+      CustomerDetailsComponent,
+      (d) => d.args = { customerId: customerId },
+      (d) => d?.changed || false
+    )
+  }
+
+  async openCustomerSelection(selectedIds: string[] = [], multiSelect: boolean = false) {
+    return await openDialog(
+      CustomerSelectionComponent,
+      (d) => d.args = { selectedIds: selectedIds, multiSelect: multiSelect, allowAdd: true, allowEdit: true, allowDelete: true }
+    )
+  }
+
+  // Contact dialogs
+  async openContactSelection(customerId: string, selectedIds: string[] = [], multiSelect: boolean = false) {
+    return await openDialog(
+      ContactSelectionComponent,
+      (d) => d.args = { customerId: customerId, selectedIds: selectedIds, multiSelect: multiSelect, allowAdd: true, allowEdit: true, allowDelete: true }
+    )
+  }
+
+  // Service Call dialogs
+  async openServiceCallDetails(serviceCallId = '', customerId = '') {
+    return await openDialog(
+      ServiceCallDetailsComponent,
+      (d) => d.args = { serviceCallId: serviceCallId, customerId: customerId },
+      (d) => d?.changed || false
+    )
+  }
+
+  async openServiceCallSelection(selectedIds: string[] = [], multiSelect: boolean = false, customerId = '') {
+    return await openDialog(
+      ServiceCallSelectionComponent,
+      (d) => d.args = { selectedIds: selectedIds, multiSelect: multiSelect, customerId: customerId, allowAdd: true, allowEdit: true, allowDelete: true }
     )
   }
 

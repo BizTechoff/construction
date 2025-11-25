@@ -1,0 +1,110 @@
+<!-- Header -->
+<div class="modal-header">
+  <h2>{{ args.multiSelect ? 'בחירת קריאות שירות' : 'בחירת קריאת שירות' }}</h2>
+</div>
+
+<!-- Search -->
+<div class="search-container" *ngIf="!loading && serviceCalls.length > 0">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="searchText"
+      (ngModelChange)="onSearchChange()"
+      placeholder="חיפוש לפי מספר קריאה, אתר, כתובת..."
+      type="text">
+    <button
+      *ngIf="searchText"
+      matSuffix
+      mat-icon-button
+      (click)="searchText=''; onSearchChange()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Content -->
+<div class="modal-content">
+  <div *ngIf="loading" class="loading-message">טוען קריאות שירות...</div>
+
+  <div *ngIf="!loading && serviceCalls.length === 0" class="no-data-message">
+    לא נמצאו קריאות שירות
+  </div>
+
+  <div *ngIf="!loading && filteredServiceCalls.length === 0 && serviceCalls.length > 0" class="no-data-message">
+    לא נמצאו תוצאות חיפוש
+  </div>
+
+  <div *ngIf="!loading && filteredServiceCalls.length > 0" class="items-list">
+    <div
+      *ngFor="let serviceCall of filteredServiceCalls"
+      class="list-item"
+      [class.selected]="isSelected(serviceCall)"
+      (click)="toggleSelection(serviceCall)">
+      <mat-checkbox
+        [checked]="isSelected(serviceCall)"
+        [disabled]="false"
+        (click)="$event.stopPropagation()">
+      </mat-checkbox>
+      <div class="item-info">
+        <div class="item-name">
+          <span class="call-number">#{{ serviceCall.callNumber }}</span>
+          <span class="status-badge" [ngClass]="getStatusClass(serviceCall.status)">
+            {{ getStatusLabel(serviceCall.status) }}
+          </span>
+        </div>
+        <div class="item-details">
+          <span *ngIf="serviceCall.site">
+            <mat-icon>business</mat-icon>
+            {{ serviceCall.site }}
+          </span>
+          <span *ngIf="serviceCall.address">
+            <mat-icon>location_on</mat-icon>
+            {{ serviceCall.address }}
+          </span>
+          <span *ngIf="serviceCall.contactName">
+            <mat-icon>person</mat-icon>
+            {{ serviceCall.contactName }}
+          </span>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button
+          *ngIf="args.allowEdit"
+          mat-icon-button
+          (click)="editServiceCall(serviceCall, $event)"
+          title="עריכה">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          *ngIf="args.allowDelete"
+          mat-icon-button
+          (click)="deleteServiceCall(serviceCall, $event)"
+          title="הסרה">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="modal-footer">
+  <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="confirm()"
+    [disabled]="selectedServiceCalls.size === 0">
+    {{ terms.ok }}
+  </button>
+  <button
+    *ngIf="args.allowAdd"
+    mat-mini-fab
+    color="accent"
+    (click)="addNew()"
+    class="add-button"
+    title="הוסף קריאת שירות">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

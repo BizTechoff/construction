@@ -1,17 +1,17 @@
 <!-- Header -->
 <div class="modal-header">
-  <h2>{{ args.multiSelect ? 'בחירת פרויקטים' : 'בחירת פרויקט' }}</h2>
+  <h2>{{ args.multiSelect ? 'בחירת לקוחות' : 'בחירת לקוח' }}</h2>
 </div>
 
 <!-- Search -->
-<div class="search-container" *ngIf="!loading && projects.length > 0">
+<div class="search-container" *ngIf="!loading && customers.length > 0">
   <mat-form-field appearance="outline" class="search-field">
     <mat-icon matPrefix>search</mat-icon>
     <input
       matInput
       [(ngModel)]="searchText"
       (ngModelChange)="onSearchChange()"
-      placeholder="חיפוש לפי שם פרויקט או מיקום..."
+      placeholder="חיפוש לפי שם, כתובת או טלפון..."
       type="text">
     <button
       *ngIf="searchText"
@@ -25,46 +25,52 @@
 
 <!-- Content -->
 <div class="modal-content">
-  <div *ngIf="loading" class="loading-message">טוען פרויקטים...</div>
+  <div *ngIf="loading" class="loading-message">טוען לקוחות...</div>
 
-  <div *ngIf="!loading && projects.length === 0" class="no-data-message">
-    לא נמצאו פרויקטים
+  <div *ngIf="!loading && customers.length === 0" class="no-data-message">
+    לא נמצאו לקוחות
   </div>
 
-  <div *ngIf="!loading && filteredProjects.length === 0 && projects.length > 0" class="no-data-message">
+  <div *ngIf="!loading && filteredCustomers.length === 0 && customers.length > 0" class="no-data-message">
     לא נמצאו תוצאות חיפוש
   </div>
 
-  <div *ngIf="!loading && filteredProjects.length > 0" class="projects-list">
+  <div *ngIf="!loading && filteredCustomers.length > 0" class="items-list">
     <div
-      *ngFor="let project of filteredProjects"
-      class="project-item"
-      [class.selected]="isSelected(project)"
-      (click)="toggleSelection(project)">
+      *ngFor="let customer of filteredCustomers"
+      class="list-item"
+      [class.selected]="isSelected(customer)"
+      (click)="toggleSelection(customer)">
       <mat-checkbox
-        [checked]="isSelected(project)"
+        [checked]="isSelected(customer)"
         [disabled]="false"
         (click)="$event.stopPropagation()">
       </mat-checkbox>
-      <div class="project-info">
-        <div class="project-name">{{ project.name }}</div>
-        <div class="project-details" *ngIf="project.location">
-          <mat-icon>location_on</mat-icon>
-          <span>{{ project.location }}</span>
+      <div class="item-info">
+        <div class="item-name">{{ customer.name }}</div>
+        <div class="item-details" *ngIf="customer.mobile || customer.address">
+          <span *ngIf="customer.mobile">
+            <mat-icon>phone</mat-icon>
+            {{ customer.mobile }}
+          </span>
+          <span *ngIf="customer.address">
+            <mat-icon>location_on</mat-icon>
+            {{ customer.address }}
+          </span>
         </div>
       </div>
       <div class="item-actions">
         <button
           *ngIf="args.allowEdit"
           mat-icon-button
-          (click)="editProject(project, $event)"
+          (click)="editCustomer(customer, $event)"
           title="עריכה">
           <mat-icon>edit</mat-icon>
         </button>
         <button
           *ngIf="args.allowDelete"
           mat-icon-button
-          (click)="deleteProject(project, $event)"
+          (click)="deleteCustomer(customer, $event)"
           title="הסרה">
           <mat-icon>delete</mat-icon>
         </button>
@@ -80,7 +86,7 @@
     mat-raised-button
     color="primary"
     (click)="confirm()"
-    [disabled]="selectedProjects.size === 0">
+    [disabled]="selectedCustomers.size === 0">
     {{ terms.ok }}
   </button>
   <button
@@ -89,7 +95,7 @@
     color="accent"
     (click)="addNew()"
     class="add-button"
-    title="הוסף פרויקט חדש">
+    title="הוסף לקוח חדש">
     <mat-icon>add</mat-icon>
   </button>
 </div>

@@ -1,39 +1,37 @@
 import {
   Entity,
-  Field,
   Fields,
   IdEntity,
   Validators
 } from 'remult'
-import { ProjectPriorityType } from '../../shared/enum/project.priority.types'
 import { terms } from '../terms'
 
-@Entity<Project>('projects', {
+@Entity<Customer>('customers', {
   allowApiCrud: true,
   defaultOrderBy: { name: 'asc' }
 })
-export class Project extends IdEntity {
+export class Customer extends IdEntity {
 
   @Fields.string({
     validate: [Validators.required(terms.requiredFiled)],
-    caption: terms.projectName
+    caption: terms.customerName
   })
   name = ''
 
-  @Field(() => ProjectPriorityType, {
-
+  @Fields.string({
+    caption: terms.mobile
   })
-  priority = ProjectPriorityType.normal
+  mobile = ''
 
   @Fields.string({
-    caption: terms.projectDescription
+    caption: terms.email
   })
-  description = ''
+  email = ''
 
   @Fields.string({
-    caption: terms.projectLocation
+    caption: terms.address
   })
-  location = ''
+  address = ''
 
   @Fields.date({
     allowApiUpdate: false,

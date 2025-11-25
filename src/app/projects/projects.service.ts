@@ -14,7 +14,7 @@ export class ProjectsService {
 
   getProjectsLive(request: GetProjectsRequest) {
     const where: any = request.filter ? { name: { $contains: request.filter } } : {}
-
+    
     const queryOptions: any = { where }
 
     if (request.sortField) {

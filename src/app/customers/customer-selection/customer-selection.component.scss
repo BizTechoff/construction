@@ -1,6 +1,5 @@
 @import '../../../styles/variables';
 
-// Override Material Dialog styles
 ::ng-deep {
   .mat-mdc-dialog-container {
     padding: 0 !important;
@@ -12,7 +11,7 @@
   }
 }
 
-app-project-selection {
+app-customer-selection {
   display: flex;
   flex-direction: column;
   min-width: 600px;
@@ -72,11 +71,11 @@ app-project-selection {
     font-size: 16px;
   }
 
-  .projects-list {
+  .items-list {
     display: flex;
     flex-direction: column;
 
-    .project-item {
+    .list-item {
       display: flex;
       align-items: center;
       padding: 16px 28px;
@@ -101,24 +100,30 @@ app-project-selection {
         margin-left: 16px;
       }
 
-      .project-info {
+      .item-info {
         flex: 1;
         display: flex;
         flex-direction: column;
         gap: 4px;
 
-        .project-name {
+        .item-name {
           font-size: 16px;
           font-weight: 500;
           color: $text-primary;
         }
 
-        .project-details {
+        .item-details {
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 16px;
           font-size: 14px;
           color: $text-secondary;
+
+          span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+          }
 
           mat-icon {
             font-size: 16px;

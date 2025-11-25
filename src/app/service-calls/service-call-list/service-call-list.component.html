@@ -1,0 +1,62 @@
+<div class="service-calls-container">
+  <h2>
+    ניהול קריאות שירות
+    <span *ngIf="customerName" class="customer-filter-badge">
+      {{ customerName }}
+      <button mat-icon-button (click)="clearCustomerFilter()" title="הסר סינון">
+        <mat-icon>close</mat-icon>
+      </button>
+    </span>
+  </h2>
+
+  <div class="filters-row">
+    <mat-form-field appearance="outline">
+      <mat-label>סטטוס</mat-label>
+      <select matNativeControl [(ngModel)]="statusFilter" (ngModelChange)="onStatusFilterChange()">
+        <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+      </select>
+    </mat-form-field>
+  </div>
+
+  <app-base-table
+    [data]="serviceCalls"
+    [entityType]="serviceCallEntity"
+    [loading]="loading"
+    [totalRecords]="totalRecords"
+    [currentPage]="currentPage"
+    [pageSize]="pageSize"
+    [sortable]="true"
+    [showFilter]="true"
+    [showPagination]="true"
+    [showActions]="true"
+    [showAdd]="true"
+    [addButtonText]="'הוסף קריאה'"
+    (onSort)="onSort($event)"
+    (onFilter)="onFilter($event)"
+    (onPageChange)="onPageChange($event)"
+    (onRefresh)="onRefresh()"
+    (onAdd)="addServiceCall()"
+    (onEdit)="editServiceCall($event)"
+    (onDelete)="deleteServiceCall($event)"
+    [hiddenColumns]="['id', 'customerId']"
+  >
+    <!-- Custom column for callNumber -->
+    <ng-template appTableColumn="callNumber" header="מספר קריאה" let-row>
+      <span class="call-number">#{{ row.callNumber }}</span>
+    </ng-template>
+
+    <!-- Custom column for status -->
+    <ng-template appTableColumn="status" header="סטטוס" let-row>
+      <span class="status-badge" [ngClass]="getStatusClass(row.status)">
+        {{ getStatusLabel(row.status) }}
+      </span>
+    </ng-template>
+
+    <!-- Custom column for createDate -->
+    <ng-template appTableColumn="createDate" header="תאריך יצירה" let-row>
+      <span>
+        {{ row.createDate | date: 'HH:mm dd/MM/yyyy' }}
+      </span>
+    </ng-template>
+  </app-base-table>
+</div>

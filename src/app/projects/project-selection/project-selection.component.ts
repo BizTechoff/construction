@@ -17,7 +17,13 @@ import { DialogConfig } from '../../common/dialogConfig'
   styleUrl: './project-selection.component.scss'
 })
 export class ProjectSelectionComponent implements OnInit {
-  args = { selectedIds: [] as string[], multiSelect: false }
+  args = {
+    selectedIds: [] as string[],
+    multiSelect: false,
+    allowAdd: true,
+    allowEdit: true,
+    allowDelete: true
+  }
   projects: Project[] = []
   filteredProjects: Project[] = []
   selectedProjects: Set<string> = new Set()
@@ -33,7 +39,13 @@ export class ProjectSelectionComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    if (!this.args) this.args = { selectedIds: [], multiSelect: false }
+    if (!this.args) this.args = {
+      selectedIds: [],
+      multiSelect: false,
+      allowAdd: true,
+      allowEdit: true,
+      allowDelete: true
+    }
 
     this.selectedProjects = new Set(this.args.selectedIds)
     await this.loadProjects()
@@ -115,6 +127,27 @@ export class ProjectSelectionComponent implements OnInit {
   async addNew() {
     const changed = await this.ui.openProjectDetails()
     if (changed) {
+      await this.loadProjects()
+    }
+  }
+
+  async editProject(project: Project, event: Event) {
+    event.stopPropagation()
+    const changed = await this.ui.openProjectDetails(project.id)
+    if (changed) {
+      await this.loadProjects()
+    }
+  }
+
+  async deleteProject(project: Project, event: Event) {
+    event.stopPropagation()
+    const confirmed = await this.ui.yesNoQuestion(
+      `${terms.areYouSureYouWouldLikeToDelete} ${project.name}?`,
+      true
+    )
+    if (confirmed) {
+      await this.projectsService.deleteProject(project.id)
+      this.selectedProjects.delete(project.id)
       await this.loadProjects()
     }
   }

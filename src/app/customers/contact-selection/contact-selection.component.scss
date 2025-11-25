@@ -1,6 +1,5 @@
 @import '../../../styles/variables';
 
-// Override Material Dialog styles
 ::ng-deep {
   .mat-mdc-dialog-container {
     padding: 0 !important;
@@ -12,7 +11,7 @@
   }
 }
 
-app-project-selection {
+app-contact-selection {
   display: flex;
   flex-direction: column;
   min-width: 600px;
@@ -72,11 +71,45 @@ app-project-selection {
     font-size: 16px;
   }
 
-  .projects-list {
+  .inline-form {
+    padding: 16px 28px;
+    background: #fff3e0;
+    border-bottom: 1px solid #ffe0b2;
+
+    &.edit-form {
+      background: #e3f2fd;
+      border-bottom: 1px solid #bbdefb;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+
+      mat-form-field {
+        flex: 1;
+        min-width: 150px;
+      }
+
+      mat-checkbox {
+        margin-top: 8px;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+  }
+
+  .items-list {
     display: flex;
     flex-direction: column;
 
-    .project-item {
+    .list-item {
       display: flex;
       align-items: center;
       padding: 16px 28px;
@@ -97,23 +130,39 @@ app-project-selection {
         }
       }
 
+      &.is-default {
+        border-right: 3px solid #4caf50;
+      }
+
       mat-checkbox {
         margin-left: 16px;
       }
 
-      .project-info {
+      .item-info {
         flex: 1;
         display: flex;
         flex-direction: column;
         gap: 4px;
 
-        .project-name {
+        .item-name {
           font-size: 16px;
           font-weight: 500;
           color: $text-primary;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .default-badge {
+            font-size: 11px;
+            font-weight: 400;
+            background: #4caf50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+          }
         }
 
-        .project-details {
+        .item-details {
           display: flex;
           align-items: center;
           gap: 4px;

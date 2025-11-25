@@ -1,0 +1,140 @@
+<!-- Header -->
+<div class="modal-header">
+  <h2>{{ args.multiSelect ? 'בחירת אנשי קשר' : 'בחירת איש קשר' }}</h2>
+</div>
+
+<!-- Search -->
+<div class="search-container" *ngIf="!loading && contacts.length > 0">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="searchText"
+      (ngModelChange)="onSearchChange()"
+      placeholder="חיפוש לפי שם או טלפון..."
+      type="text">
+    <button
+      *ngIf="searchText"
+      matSuffix
+      mat-icon-button
+      (click)="searchText=''; onSearchChange()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Content -->
+<div class="modal-content">
+  <div *ngIf="loading" class="loading-message">טוען אנשי קשר...</div>
+
+  <div *ngIf="!loading && contacts.length === 0 && !isAdding" class="no-data-message">
+    לא נמצאו אנשי קשר
+  </div>
+
+  <div *ngIf="!loading && filteredContacts.length === 0 && contacts.length > 0 && !isAdding" class="no-data-message">
+    לא נמצאו תוצאות חיפוש
+  </div>
+
+  <!-- Add Form -->
+  <div *ngIf="isAdding" class="inline-form add-form">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>שם</mat-label>
+        <input matInput [(ngModel)]="addForm.name" placeholder="שם איש קשר">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>נייד</mat-label>
+        <input matInput [(ngModel)]="addForm.mobile" placeholder="מספר נייד">
+      </mat-form-field>
+      <mat-checkbox [(ngModel)]="addForm.isDefault">ברירת מחדל</mat-checkbox>
+    </div>
+    <div class="form-actions">
+      <button mat-button (click)="cancelAdd()">ביטול</button>
+      <button mat-raised-button color="primary" (click)="saveAdd()" [disabled]="!addForm.name.trim()">שמור</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && filteredContacts.length > 0" class="items-list">
+    <ng-container *ngFor="let contact of filteredContacts">
+      <!-- Edit Form -->
+      <div *ngIf="isEditing(contact)" class="inline-form edit-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>שם</mat-label>
+            <input matInput [(ngModel)]="editForm.name" placeholder="שם איש קשר">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>נייד</mat-label>
+            <input matInput [(ngModel)]="editForm.mobile" placeholder="מספר נייד">
+          </mat-form-field>
+          <mat-checkbox [(ngModel)]="editForm.isDefault">ברירת מחדל</mat-checkbox>
+        </div>
+        <div class="form-actions">
+          <button mat-button (click)="cancelEdit()">ביטול</button>
+          <button mat-raised-button color="primary" (click)="saveEdit()" [disabled]="!editForm.name.trim()">שמור</button>
+        </div>
+      </div>
+
+      <!-- Display Row -->
+      <div
+        *ngIf="!isEditing(contact)"
+        class="list-item"
+        [class.selected]="isSelected(contact)"
+        [class.is-default]="contact.isDefault"
+        (click)="toggleSelection(contact)">
+        <mat-checkbox
+          [checked]="isSelected(contact)"
+          [disabled]="false"
+          (click)="$event.stopPropagation()">
+        </mat-checkbox>
+        <div class="item-info">
+          <div class="item-name">
+            {{ contact.name }}
+            <span *ngIf="contact.isDefault" class="default-badge">ברירת מחדל</span>
+          </div>
+          <div class="item-details" *ngIf="contact.mobile">
+            <mat-icon>phone</mat-icon>
+            <span>{{ contact.mobile }}</span>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button
+            *ngIf="args.allowEdit"
+            mat-icon-button
+            (click)="startEdit(contact, $event)"
+            title="עריכה">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            *ngIf="args.allowDelete"
+            mat-icon-button
+            (click)="deleteContact(contact, $event)"
+            title="הסרה">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="modal-footer">
+  <button mat-button (click)="cancel()">{{ terms.cancel }}</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="confirm()"
+    [disabled]="selectedContacts.size === 0">
+    {{ terms.ok }}
+  </button>
+  <button
+    *ngIf="args.allowAdd && !isAdding"
+    mat-mini-fab
+    color="accent"
+    (click)="startAdd()"
+    class="add-button"
+    title="הוסף איש קשר חדש">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,37 @@
+<div class="customers-container">
+  <h2>ניהול לקוחות</h2>
+
+  <app-base-table
+    [data]="customers"
+    [entityType]="customerEntity"
+    [loading]="loading"
+    [totalRecords]="totalRecords"
+    [currentPage]="currentPage"
+    [pageSize]="pageSize"
+    [sortable]="true"
+    [showFilter]="true"
+    [showPagination]="true"
+    [showActions]="true"
+    [showAdd]="true"
+    [addButtonText]="'הוסף לקוח'"
+    [showCustomAction]="true"
+    [customActionIcon]="'support_agent'"
+    [customActionTitle]="'קריאות שירות'"
+    (onSort)="onSort($event)"
+    (onFilter)="onFilter($event)"
+    (onPageChange)="onPageChange($event)"
+    (onRefresh)="onRefresh()"
+    (onAdd)="addCustomer()"
+    (onEdit)="editCustomer($event)"
+    (onDelete)="deleteCustomer($event)"
+    (onCustomAction)="openServiceCalls($event)"
+    [hiddenColumns]="['id']"
+  >
+    <!-- Custom column for createDate -->
+    <ng-template appTableColumn="createDate" header="תאריך יצירה" let-row>
+      <span>
+        {{ row.createDate | date: 'HH:mm dd/MM/yyyy' }}
+      </span>
+    </ng-template>
+  </app-base-table>
+</div>
