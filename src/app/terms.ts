@@ -104,6 +104,8 @@ export const terms = {
   site: 'אתר',
   description: 'תיאור הקריאה',
   status: 'סטטוס',
+  serviceCallType: 'סוג שירות',
+  lastUpdateDate: 'עדכון אחרון',
 
   // WhatsApp module
   whatsapp: 'ווטסאפ',

@@ -6,6 +6,7 @@ import {
 } from 'remult'
 import { terms } from '../terms'
 import { ServiceCallStatus } from './service-call.status'
+import { ServiceCallType } from './service-call.type'
 
 @Entity<ServiceCall>('serviceCalls', {
   allowApiCrud: true,
@@ -47,10 +48,20 @@ export class ServiceCall extends IdEntity {
   })
   contactMobile = ''
 
+  @Fields.object<ServiceCall, ServiceCallType>({
+    caption: terms.serviceCallType
+  })
+  serviceType = ServiceCallType.other
+
   @Fields.object<ServiceCall, ServiceCallStatus>({
     caption: terms.status
   })
   status = ServiceCallStatus.open
+
+  @Fields.date({
+    caption: terms.lastUpdateDate
+  })
+  lastUpdateDate = new Date()
 
   @Fields.date({
     allowApiUpdate: false,
