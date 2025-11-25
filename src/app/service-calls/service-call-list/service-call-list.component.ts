@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core'
+import { Component, OnInit, NgZone } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { remult } from 'remult'
-import { SortEvent, PageEvent } from '../../common/components/base-table/table.interfaces'
+import { remult, Repository } from 'remult'
 import { UIToolsService } from '../../common/UIToolsService'
+import { LiveQueryListComponent } from '../../common/liveQueryListComponent'
 import { terms } from '../../terms'
 import { ServiceCall } from '../service-call'
 import { ServiceCallStatus } from '../service-call.status'
 import { ServiceCallsService } from '../service-calls.service'
-import { BusyService } from '../../common/components/wait/busyService'
 import { getValueList } from 'remult'
 
 @Component({
@@ -15,24 +14,15 @@ import { getValueList } from 'remult'
   templateUrl: './service-call-list.component.html',
   styleUrl: './service-call-list.component.scss'
 })
-export class ServiceCallListComponent implements OnInit, OnDestroy {
+export class ServiceCallListComponent extends LiveQueryListComponent<ServiceCall> implements OnInit {
   serviceCalls: ServiceCall[] = []
-  loading = false
-  totalRecords = 0
-  currentPage = 1
-  pageSize = 30
   serviceCallEntity = ServiceCall
 
-  currentFilter = ''
-  currentSort: SortEvent | null = null
   statusFilter = ''
 
   // From query params
   customerId = ''
   customerName = ''
-
-  useLiveQuery = false
-  private liveQueryUnsubscribe?: VoidFunction
 
   statusOptions = [
     { value: '', label: 'הכל' },
@@ -40,27 +30,50 @@ export class ServiceCallListComponent implements OnInit, OnDestroy {
   ]
 
   constructor(
-    private ui: UIToolsService,
-    private busyService: BusyService,
+    ngZone: NgZone,
+    ui: UIToolsService,
     private serviceCallsService: ServiceCallsService,
-    private ngZone: NgZone,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super(ngZone, ui)
+  }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.customerId = params['customerId'] || ''
       this.customerName = params['customerName'] || ''
     })
-    await this.loadServiceCalls()
+    await this.reload()
   }
 
-  ngOnDestroy() {
-    this.liveQueryUnsubscribe?.()
+  protected getRepository(): Repository<ServiceCall> {
+    return remult.repo(ServiceCall)
   }
 
-  async loadServiceCalls() {
+  protected override buildWhereClause(): any {
+    const where: any = {}
+
+    if (this.currentFilter) {
+      where.$or = [
+        { site: { $contains: this.currentFilter } },
+        { address: { $contains: this.currentFilter } },
+        { contactName: { $contains: this.currentFilter } }
+      ]
+    }
+
+    if (this.customerId) {
+      where.customerId = this.customerId
+    }
+
+    if (this.statusFilter) {
+      where.status = this.statusFilter
+    }
+
+    return where
+  }
+
+  protected async loadData() {
     this.loading = true
     try {
       const response = await this.serviceCallsService.getServiceCalls({
@@ -82,38 +95,41 @@ export class ServiceCallListComponent implements OnInit, OnDestroy {
     }
   }
 
-  async onSort(event: SortEvent) {
-    this.currentSort = event
-    this.currentPage = 1
-    await this.loadServiceCalls()
-  }
+  protected loadDataLive() {
+    this.loading = true
+    this.liveQueryUnsubscribe?.()
 
-  async onFilter(searchText: string) {
-    this.currentFilter = searchText
-    this.currentPage = 1
-    await this.loadServiceCalls()
-  }
+    const liveQuery = this.serviceCallsService.getServiceCallsLive({
+      filter: this.currentFilter,
+      customerId: this.customerId || undefined,
+      status: this.statusFilter || undefined,
+      sortField: this.currentSort?.field,
+      sortDirection: this.currentSort?.direction,
+      page: this.currentPage,
+      pageSize: this.pageSize
+    })
 
-  async onPageChange(event: PageEvent) {
-    this.currentPage = event.page
-    this.pageSize = event.pageSize
-    await this.loadServiceCalls()
+    this.liveQueryUnsubscribe = liveQuery.subscribe((info) => {
+      this.ngZone.run(() => {
+        this.serviceCalls = info.items
+        this.loading = false
+        this.loadTotalCount()
+      })
+    })
   }
 
   async onStatusFilterChange() {
     this.currentPage = 1
-    await this.loadServiceCalls()
-  }
-
-  async onRefresh() {
-    await this.loadServiceCalls()
+    await this.reload()
   }
 
   async addServiceCall() {
     const changed = await this.ui.openServiceCallDetails('', this.customerId)
     if (changed) {
       this.ui.info('קריאת השירות נוספה בהצלחה')
-      await this.loadServiceCalls()
+      if (!this.useLiveQuery) {
+        await this.loadData()
+      }
     }
   }
 
@@ -121,7 +137,9 @@ export class ServiceCallListComponent implements OnInit, OnDestroy {
     const changed = await this.ui.openServiceCallDetails(serviceCall.id)
     if (changed) {
       this.ui.info('קריאת השירות עודכנה בהצלחה')
-      await this.loadServiceCalls()
+      if (!this.useLiveQuery) {
+        await this.loadData()
+      }
     }
   }
 
@@ -135,7 +153,7 @@ export class ServiceCallListComponent implements OnInit, OnDestroy {
       try {
         await this.serviceCallsService.deleteServiceCall(serviceCall.id)
         this.ui.info('קריאת השירות נמחקה בהצלחה')
-        await this.loadServiceCalls()
+        await this.loadData()
       } catch (error) {
         this.ui.error(error)
       }
@@ -154,6 +172,6 @@ export class ServiceCallListComponent implements OnInit, OnDestroy {
     this.customerId = ''
     this.customerName = ''
     this.router.navigate(['/service-calls'])
-    this.loadServiceCalls()
+    this.reload()
   }
 }

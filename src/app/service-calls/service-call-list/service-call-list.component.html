@@ -1,13 +1,21 @@
 <div class="service-calls-container">
-  <h2>
-    ניהול קריאות שירות
-    <span *ngIf="customerName" class="customer-filter-badge">
-      {{ customerName }}
-      <button mat-icon-button (click)="clearCustomerFilter()" title="הסר סינון">
-        <mat-icon>close</mat-icon>
-      </button>
-    </span>
-  </h2>
+  <div class="header">
+    <h2>
+      ניהול קריאות שירות
+      <span *ngIf="customerName" class="customer-filter-badge">
+        {{ customerName }}
+        <button mat-icon-button (click)="clearCustomerFilter()" title="הסר סינון">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+    </h2>
+    <div class="live-mode-toggle" (click)="toggleQueryMode()">
+      <span class="toggle-label">Live</span>
+      <div class="toggle-switch" [class.active]="useLiveQuery">
+        <div class="toggle-slider"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="filters-row">
     <mat-form-field appearance="outline">

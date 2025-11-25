@@ -1,9 +1,12 @@
 <div class="users-container">
   <div class="header">
     <h2>ניהול משתמשים</h2>
-    <button class="toggle-mode-btn" (click)="toggleQueryMode()">
-      {{ useLiveQuery ? '🔴 Live Mode' : '⚪ Regular Mode' }}
-    </button>
+    <div class="live-mode-toggle" (click)="toggleQueryMode()">
+      <span class="toggle-label">Live</span>
+      <div class="toggle-switch" [class.active]="useLiveQuery">
+        <div class="toggle-slider"></div>
+      </div>
+    </div>
   </div>
 
   <app-base-table

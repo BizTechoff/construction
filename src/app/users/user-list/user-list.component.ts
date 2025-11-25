@@ -1,62 +1,48 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core'
-import { remult } from 'remult'
-import { SortEvent, PageEvent } from '../../common/components/base-table/table.interfaces'
+import { Component, OnInit, NgZone } from '@angular/core'
+import { remult, Repository } from 'remult'
 import { UIToolsService } from '../../common/UIToolsService'
+import { LiveQueryListComponent } from '../../common/liveQueryListComponent'
 import { terms } from '../../terms'
 import { Roles } from '../roles'
 import { User } from '../user'
 import { UsersService } from '../users.service'
-import { BusyService } from '../../common/components/wait/busyService'
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
-export class UserListComponent {
+export class UserListComponent extends LiveQueryListComponent<User> implements OnInit {
   users: User[] = []
-  loading = false
-  totalRecords = 0
-  currentPage = 1
-  pageSize = 30
-  userEntity = User  // For base-table metadata
-
-  // Current filters/sorting
-  currentFilter = ''
-  currentSort: SortEvent | null = null  // null = use Entity's defaultOrderBy
-
-  // LiveQuery mode toggle
-  useLiveQuery = false  // ברירת מחדל: Regular query
-  private liveQueryUnsubscribe?: VoidFunction
+  userEntity = User
 
   constructor(
-    private ui: UIToolsService,
-    private busyService: BusyService,
-    private usersService: UsersService,
-    private ngZone: NgZone
-  ) {}
+    ngZone: NgZone,
+    ui: UIToolsService,
+    private usersService: UsersService
+  ) {
+    super(ngZone, ui)
+  }
 
   isAdmin() {
     return remult.isAllowed(Roles.admin)
   }
+
   async ngOnInit() {
-    if (this.useLiveQuery) {
-      this.loadUsersLive()
-    } else {
-      await this.loadUsers()
-    }
+    await this.reload()
   }
 
-  ngOnDestroy() {
-    // Cleanup LiveQuery subscription
-    this.liveQueryUnsubscribe?.()
+  protected getRepository(): Repository<User> {
+    return remult.repo(User)
   }
 
-  // Regular Query - דרך Service → Controller → DB
-  async loadUsers() {
+  protected override buildWhereClause(): any {
+    return this.currentFilter ? { name: { $contains: this.currentFilter } } : {}
+  }
+
+  protected async loadData() {
     this.loading = true
     try {
-      // Call service → controller → DB
       const response = await this.usersService.getUsers({
         filter: this.currentFilter,
         sortField: this.currentSort?.field,
@@ -74,14 +60,10 @@ export class UserListComponent {
     }
   }
 
-  // LiveQuery - עדכונים אוטומטיים בזמן אמת
-  loadUsersLive() {
+  protected loadDataLive() {
     this.loading = true
-
-    // Unsubscribe from previous subscription
     this.liveQueryUnsubscribe?.()
 
-    // Subscribe to LiveQuery
     const liveQuery = this.usersService.getUsersLive({
       filter: this.currentFilter,
       sortField: this.currentSort?.field,
@@ -90,92 +72,21 @@ export class UserListComponent {
       pageSize: this.pageSize
     })
 
-    // Subscribe to changes - עם NgZone כדי ש-Angular יזהה שינויים
     this.liveQueryUnsubscribe = liveQuery.subscribe((info) => {
       this.ngZone.run(() => {
-        this.users = info.items  // LiveQuery מחזיר info.items
+        this.users = info.items
         this.loading = false
-
-        // Note: LiveQuery לא מחזיר totalRecords, צריך שליפה נפרדת
         this.loadTotalCount()
       })
     })
-  }
-
-  // Helper method לספירה (בשביל LiveQuery)
-  private async loadTotalCount() {
-    try {
-      const where = this.currentFilter ? { name: { $contains: this.currentFilter } } : {}
-      this.totalRecords = await remult.repo(User).count(where)
-    } catch (error) {
-      console.error('Failed to load total count:', error)
-    }
-  }
-
-  // Event handlers for base-table
-  async onSort(event: SortEvent) {
-    this.currentSort = event
-    this.currentPage = 1 // Reset to first page
-
-    if (this.useLiveQuery) {
-      this.loadUsersLive()
-    } else {
-      await this.loadUsers()
-    }
-  }
-
-  async onFilter(searchText: string) {
-    this.currentFilter = searchText
-    this.currentPage = 1 // Reset to first page
-
-    if (this.useLiveQuery) {
-      this.loadUsersLive()
-    } else {
-      await this.loadUsers()
-    }
-  }
-
-  async onPageChange(event: PageEvent) {
-    this.currentPage = event.page
-    this.pageSize = event.pageSize
-
-    if (this.useLiveQuery) {
-      this.loadUsersLive()
-    } else {
-      await this.loadUsers()
-    }
-  }
-
-  async onRefresh() {
-    if (this.useLiveQuery) {
-      this.loadUsersLive()
-    } else {
-      await this.loadUsers()
-    }
-  }
-
-  // Toggle between Regular and LiveQuery modes
-  toggleQueryMode() {
-    this.useLiveQuery = !this.useLiveQuery
-
-    if (this.useLiveQuery) {
-      this.ui.info('מצב LiveQuery הופעל - עדכונים בזמן אמת')
-      this.loadUsersLive()
-    } else {
-      this.ui.info('מצב Regular Query הופעל - קריאות ידניות')
-      this.liveQueryUnsubscribe?.()
-      this.loadUsers()
-    }
   }
 
   async addUser() {
     const changed = await this.ui.openUserDetailsModal()
     if (changed) {
       this.ui.info('המשתמש נוסף בהצלחה')
-      if (this.useLiveQuery) {
-        // LiveQuery יתעדכן אוטומטית
-      } else {
-        await this.loadUsers() // Refresh list
+      if (!this.useLiveQuery) {
+        await this.loadData()
       }
     }
   }
@@ -184,10 +95,8 @@ export class UserListComponent {
     const changed = await this.ui.openUserDetailsModal(user.id)
     if (changed) {
       this.ui.info('המשתמש עודכן בהצלחה')
-      if (this.useLiveQuery) {
-        // LiveQuery יתעדכן אוטומטית
-      } else {
-        await this.loadUsers() // Refresh list
+      if (!this.useLiveQuery) {
+        await this.loadData()
       }
     }
   }
@@ -200,10 +109,9 @@ export class UserListComponent {
 
     if (confirmed) {
       try {
-        // Call service → controller
         await this.usersService.deleteUser(user.id)
         this.ui.info('המשתמש נמחק בהצלחה')
-        await this.loadUsers() // Refresh list
+        await this.loadData()
       } catch (error) {
         this.ui.error(error)
       }
@@ -218,7 +126,6 @@ export class UserListComponent {
 
     if (confirmed) {
       try {
-        // Call service → controller
         await this.usersService.resetUserPassword(user.id)
         this.ui.info(terms.passwordDeletedSuccessful)
       } catch (error) {

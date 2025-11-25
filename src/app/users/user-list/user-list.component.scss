@@ -18,20 +18,56 @@
   color: #333;
 }
 
-.toggle-mode-btn {
-  padding: 8px 16px;
-  background: white;
-  border: 2px solid #ddd;
-  border-radius: 20px;
+// Live Mode Toggle Switch
+.live-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s;
-}
+  user-select: none;
 
-.toggle-mode-btn:hover {
-  background: #f5f5f5;
-  border-color: #1976d2;
+  .toggle-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+  }
+
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+    background: #ccc;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.3s ease;
+
+    .toggle-slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    &.active {
+      background: #4caf50;
+
+      .toggle-slider {
+        transform: translateX(20px);
+      }
+    }
+  }
+
+  &:hover .toggle-switch {
+    background: #bbb;
+
+    &.active {
+      background: #43a047;
+    }
+  }
 }
 
 app-base-table {
