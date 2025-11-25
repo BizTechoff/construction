@@ -10,7 +10,7 @@ import { sendMessage } from './wapp'
 // Configuration
 const COMPANY_NAME = process.env['COMPANY_NAME'] || 'BizTechoff™'
 const PRIVACY_URL = process.env['PRIVACY_URL'] || 'https://biztechoff.co.il/privacy.html'
-const CUSTOMER_PORTAL_URL = process.env['CUSTOMER_PORTAL_URL'] || 'https://biztechoff.com/portal'
+const CUSTOMER_PORTAL_URL = process.env['CUSTOMER_PORTAL_URL'] || 'https://biztechoff.co.il'
 
 // Conversation state management (in-memory, consider Redis for production)
 interface ConversationState {

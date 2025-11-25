@@ -12,5 +12,5 @@ export class WhatsAppLogType {
   static session_ended = new WhatsAppLogType('שיחה הסתיימה')
 
   constructor(public caption = '') { }
-  id = ''
+  public id = ''
 }
