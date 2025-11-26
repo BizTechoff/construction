@@ -6,6 +6,7 @@ import { LiveQueryListComponent } from '../../common/liveQueryListComponent'
 import { terms } from '../../terms'
 import { ServiceCall } from '../service-call'
 import { ServiceCallStatus } from '../service-call.status'
+import { ServiceCallType } from '../service-call.type'
 import { ServiceCallsService } from '../service-calls.service'
 import { getValueList } from 'remult'
 
@@ -166,6 +167,14 @@ export class ServiceCallListComponent extends LiveQueryListComponent<ServiceCall
 
   getStatusClass(status: ServiceCallStatus): string {
     return `status-${status?.id || 'open'}`
+  }
+
+  getServiceTypeLabel(serviceType: ServiceCallType): string {
+    return serviceType?.caption || ''
+  }
+
+  getServiceTypeClass(serviceType: ServiceCallType): string {
+    return `service-type-${serviceType?.id || 'other'}`
   }
 
   clearCustomerFilter() {

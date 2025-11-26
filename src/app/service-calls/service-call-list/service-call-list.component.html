@@ -60,11 +60,26 @@
       </span>
     </ng-template>
 
+    <!-- Custom column for status -->
+    <ng-template appTableColumn="serviceType" header="סוג שירות" let-row>
+      <span class="status-badge" [ngClass]="getServiceTypeClass(row.serviceType)">
+        {{ getServiceTypeLabel(row.serviceType) }}
+      </span>
+    </ng-template>
+
+    <!-- Custom column for createDate -->
+    <ng-template appTableColumn="lastUpdateDate" header="עדכון אחרון" let-row>
+      <span>
+        {{ row.lastUpdateDate | date: 'HH:mm dd/MM/yyyy' }}
+      </span>
+    </ng-template>
+
     <!-- Custom column for createDate -->
     <ng-template appTableColumn="createDate" header="תאריך יצירה" let-row>
       <span>
         {{ row.createDate | date: 'HH:mm dd/MM/yyyy' }}
       </span>
     </ng-template>
+
   </app-base-table>
 </div>

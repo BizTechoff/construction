@@ -3,17 +3,17 @@ import {
   Fields,
   IdEntity,
   Validators
-} from 'remult'
-import { terms } from '../terms'
-import { ServiceCallStatus } from './service-call.status'
-import { ServiceCallType } from './service-call.type'
+} from 'remult';
+import { terms } from '../terms';
+import { ServiceCallStatus } from './service-call.status';
+import { ServiceCallType } from './service-call.type';
 
 @Entity<ServiceCall>('serviceCalls', {
   allowApiCrud: true,
   defaultOrderBy: { createDate: 'desc' }
 })
 export class ServiceCall extends IdEntity {
-  
+
   @Fields.autoIncrement({ caption: 'מס.קריאה', allowApiUpdate: false, dbReadOnly: true })
   callNumber = 0;
 
